@@ -16,12 +16,13 @@
 			<h1>Wave Function Collapse</h1>
 			<h2>High Resolution - Texture #1</h2>
 		</header>
-		<aside data-openX>
-			<form method="dialog">
-				<input type="file" />
+		<aside data-open>
+			<form method="dialog" onchange="window.postMessage({ type: 'sourcePicker' })">
+				<label for="sourcePicker">Choose Source</label>
+				<input id="sourcePicker" name="sourcePicker" type="file" accept="image/*" />
 			</form>
 
-			<img src="" />
+			<img id="source" src="" />
 
 			<div data-info>
 				<span>7 color</span>
