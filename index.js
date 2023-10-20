@@ -59,6 +59,7 @@ async function onContentLoaded() {
 	//
 	onmessage = event => {
 		UI.handleMessage(config, event)
+			.catch(e => console.warn('error in UI handler', e))
 	}
 
 	//
