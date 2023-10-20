@@ -1,0 +1,146 @@
+@layer reset {
+	* {
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+
+		font-size: inherit;
+		color: inherit;
+	}
+}
+
+@layer app {
+	:root {
+		--background: teal;
+		--secondary-background: royalblue;
+
+		--primary-text: yellow;
+		--secondary-text: darkturquoise;
+		--tertiary-text: white;
+	}
+
+	html {
+		font-size: 100%;
+
+		height: 100vh;
+	}
+
+	body {
+		display: grid;
+		grid-template-areas:
+			"h h"
+			"a m"
+			"f f";
+		grid-template-rows: min-content 1fr min-content;
+		grid-template-columns: min-content 1fr;
+
+		height: 100vh;
+
+		font-family: monospace;
+		text-transform: uppercase;
+		text-shadow: 3px 3px 1px rgb(0 0 0 / 0.5);
+		/* font-size: 2em; */
+
+		background-color: var(--background);
+	}
+
+	header, footer {
+		display: flex;
+		justify-content: space-between;
+
+		font-size: 2em;
+
+		background-color: var(--secondary-background);
+		padding-inline: 1ch;
+		padding-block: .25em;
+	}
+
+	header {
+		grid-area: h;
+
+		box-shadow: 1px 0 15px rgb(0 0 0 / 0.25);
+
+		& > h1 {
+			color: var(--primary-text);
+		}
+
+		& > h2 {
+			color: var(--secondary-text);
+		}
+	}
+
+	footer {
+		grid-area: f;
+
+		background-color: var(--secondary-background);
+
+		& > span:first-child {
+			color: var(--secondary-text);
+		}
+
+		& > span:last-child {
+			color: var(--tertiary-text);
+		}
+	}
+
+	aside {
+		grid-area: a;
+		display: flex;
+		flex-direction: column;
+		gap: .25em;
+
+		font-size: 1.5em;
+		color: var(--tertiary-text);
+
+		padding-inline: 1ch;
+		padding-block: 1em;
+
+		width: 25ch;
+		overflow: hidden;
+
+		transition: width 1s, padding-inline 1s;
+
+		& > * {
+			transition: transform 1s;
+		}
+
+		&:not([data-open]) {
+			width: 0;
+			padding-inline: 0;
+
+			& > * {
+				transform: translateX(-100vw);
+			}
+		}
+
+		& > [data-info] {
+			display: flex;
+			flex-direction: column;
+			gap: .25em;
+		}
+	}
+
+	main {
+		grid-area: m;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+
+
+		padding-inline: 1ch;
+		padding-block-start: 1.5em;
+		max-height: 100%;
+
+		overflow: scroll;
+
+		& > canvas {
+			background-color: rgb(0 0 0 / 0.25);
+
+			max-width: min(100%, 1600px);
+			max-height: 85%;
+			aspect-ratio: 16 / 9;
+		}
+	}
+}

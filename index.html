@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta content="dark" name="color-scheme">
+
+		<title>Wave Function Collapse</title>
+
+		<link rel="stylesheet" type="text/css" href="index.css" />
+		<script async defer type="module" src="index.js"></script>
+	</head>
+	<body>
+		<header onclick="document.querySelector('aside').toggleAttribute('data-open')">
+			<h1>Wave Function Collapse</h1>
+			<h2>High Resolution - Texture #1</h2>
+		</header>
+		<aside data-openX>
+			<form method="dialog">
+				<input type="file" />
+			</form>
+
+			<img src="" />
+
+			<div data-info>
+				<span>7 color</span>
+				<ul>
+					<template>
+						<li>
+							<input type="color" readonly contenteditable="false" />
+						</li>
+					</template>
+				</ul>
+
+				<span>Wrap:</span>
+				<span>Mirror:</span>
+				<span>Swap:</span>
+			</div>
+
+			<span>Tiles:</span>
+			<ul>
+				<template>
+					<li>
+						<slot name="img" part="img">
+							<img src=""/>
+						</slot>
+					</li>
+				</template>
+			</ul>
+		</aside>
+		<main>
+			<!-- <span></span> -->
+			<canvas id="canvas" width="1600" height="900"></canvas>
+		</main>
+		<footer>
+			<span>John</span>
+			<span>2023-10-23</span>
+		</footer>
+	</body>
+</html>
