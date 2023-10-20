@@ -31,7 +31,6 @@ function render(config) {
 	// config.context.fillStyle = 'rgb(255 0 0)'
 	// config.context.fillRect(0, 0, width, height)
 
-
 	const cellWidth = width / config.grid.width
 	const cellHeight = height / config.grid.height
 
@@ -41,9 +40,7 @@ function render(config) {
 			const canvasX = cellWidth * x
 			const canvasY = cellHeight * y
 
-			config.context.drawImage(config.source, canvasX, canvasY, cellWidth - 1, cellHeight - 1)
-
-			// config.context.strokeRect(canvasX, canvasY, cellWidth - 1, cellHeight - 1)
+			config.context.drawImage(config.source, canvasX, canvasY, cellWidth, cellHeight)
 		}
 	}
 }
@@ -59,15 +56,16 @@ async function onContentLoaded() {
 	//
 	onmessage = event => {
 		UI.handleMessage(config, event)
+			.then(() => render(config))
 			.catch(e => console.warn('error in UI handler', e))
 	}
 
 	//
-	const proxyRender = () => {
-		render(config)
-		requestAnimationFrame(proxyRender)
-	}
-	requestAnimationFrame(proxyRender)
+	// const proxyRender = () => {
+	// 	render(config)
+	// 	requestAnimationFrame(proxyRender)
+	// }
+	// requestAnimationFrame(proxyRender)
 
 	//
 	setInterval(() => {
