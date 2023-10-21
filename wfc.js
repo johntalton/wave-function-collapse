@@ -32,7 +32,7 @@ function selectSuperPosition(item, tiles) {
 
 export class WaveFunctionCollapse {
 	static collapse(grid, tiles) {
-		console.log('collapse', grid, tiles)
+		// console.log('collapse', grid, tiles)
 
 		//
 		// least entropy grid item
@@ -55,7 +55,7 @@ export class WaveFunctionCollapse {
 			return grid
 		}
 
-		console.log('selected candidate', candidate, rest)
+		// console.log('selected candidate', candidate, rest)
 
 		//
 		// resolve grid item
@@ -65,7 +65,7 @@ export class WaveFunctionCollapse {
 		candidate.item.resolved = resolvedTilePos
 		candidate.item.superPositions = []
 
-		console.log('resolved candidate with pos', candidate)
+		// console.log('resolved candidate with pos', candidate)
 
 		//
 		// propagate constraints to neighbors
@@ -93,7 +93,7 @@ export class WaveFunctionCollapse {
 				s + 18, s + 18 + 1, s + 18 + 2,
 			]
 
-			console.log('cube', targetX, targetY, cubIdxs)
+			// console.log('cube', targetX, targetY, cubIdxs)
 			const cube = grid.items.filter((item, idx) => {
 				return cubIdxs.includes(idx)
 			})
@@ -121,86 +121,86 @@ export class WaveFunctionCollapse {
 }
 
 
-const config = {
-	grid: {
-		height: 9,
-		width: 9,
-		items: [
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// const config = {
+// 	grid: {
+// 		height: 9,
+// 		width: 9,
+// 		items: [
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
 
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
 
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
-			{ }, { }, { },  { }, { }, { },  { }, { }, { },
-		]
-	},
-	tiles: [
-		{ name: '1', weight: .5, color: 'red' },
-		{ name: '2', weight: .5, color: 'red' },
-		{ name: '3', weight: 1, color: 'red' },
-		{ name: '4', weight: 1, color: 'red' },
-		{ name: '5', weight: 1, color: 'red' },
-		{ name: '6', weight: 1, color: 'red' },
-		{ name: '7', weight: 1, color: 'red' },
-		{ name: '8', weight: 1, color: 'red' },
-		{ name: '9', weight: 1, color: 'red' },
-	]
-}
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// 			{ }, { }, { },  { }, { }, { },  { }, { }, { },
+// 		]
+// 	},
+// 	tiles: [
+// 		{ name: '1', weight: .5, color: 'red' },
+// 		{ name: '2', weight: .5, color: 'red' },
+// 		{ name: '3', weight: 1, color: 'red' },
+// 		{ name: '4', weight: 1, color: 'red' },
+// 		{ name: '5', weight: 1, color: 'red' },
+// 		{ name: '6', weight: 1, color: 'red' },
+// 		{ name: '7', weight: 1, color: 'red' },
+// 		{ name: '8', weight: 1, color: 'red' },
+// 		{ name: '9', weight: 1, color: 'red' },
+// 	]
+// }
 
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
 
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
 
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
+// config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
 
 
 
-const BRK_STR = '\n------+-------+------\n'
-console.log(config.grid.items.reduce((acc, item, idx) => {
+// const BRK_STR = '\n------+-------+------\n'
+// console.log(config.grid.items.reduce((acc, item, idx) => {
 
-	// const value = item.resolved || '_'
-	const value = (item.resolved !== undefined) ? item.resolved : ('[' + (item.superPositions || '_') + ']')
+// 	// const value = item.resolved || '_'
+// 	const value = (item.resolved !== undefined) ? item.resolved : ('[' + (item.superPositions || '_') + ']')
 
-	const modBar = (idx + 1) % 3 === 0
-	const modRet = (idx + 1) % 9 === 0
-	const modBrk = (idx + 1) % 27 === 0
-	const modEnd = (idx + 1) % 81 === 0
+// 	const modBar = (idx + 1) % 3 === 0
+// 	const modRet = (idx + 1) % 9 === 0
+// 	const modBrk = (idx + 1) % 27 === 0
+// 	const modEnd = (idx + 1) % 81 === 0
 
-	const suffix = modEnd ? '\n.' :
-		modBrk ? BRK_STR :
-		modRet ? '\n' :
-		modBar ? ' | ':
-		' '
+// 	const suffix = modEnd ? '\n.' :
+// 		modBrk ? BRK_STR :
+// 		modRet ? '\n' :
+// 		modBar ? ' | ':
+// 		' '
 
-	return acc + value + suffix
-}, '\n'))
+// 	return acc + value + suffix
+// }, '\n'))
 

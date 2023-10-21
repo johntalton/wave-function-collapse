@@ -15,20 +15,50 @@ function setup() {
 	return {
 		canvas, context,
 		source,
+
 		grid: {
-			height: 2,
-			width: 3,
+			height: 9,
+			width: 9,
 			items: [
-				{}, {}, {},
-				{}, {}, {}
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+				{ }, { }, { },  { }, { }, { },  { }, { }, { },
 			]
 		},
 		tiles: [
-			{ name: 'bar', weight: .25, color: 'red' },
-			{ name: 'foo', weight: .5, color: 'green' },
-			{ name: 'bar', weight: 1, color: 'blue' },
-			{ name: 'qix', weight: 1, color: 'yellow' }
+			{ name: '1', weight: 1, color: 'red' },
+			{ name: '2', weight: .1, color: 'green' },
+			{ name: '3', weight: .1, color: 'blue' },
+			{ name: '4', weight: 1, color: 'yellow' },
+			{ name: '5', weight: 1, color: 'orange' },
+			{ name: '6', weight: .1, color: 'cyan' },
+			{ name: '7', weight: .1, color: 'pink' },
+			{ name: '8', weight: .01, color: 'black' },
+			{ name: '9', weight: .01, color: 'white' },
 		]
+
+		// grid: {
+		// 	height: 2,
+		// 	width: 3,
+		// 	items: [
+		// 		{}, {}, {},
+		// 		{}, {}, {}
+		// 	]
+		// },
+		// tiles: [
+		// 	{ name: 'bar', weight: .25, color: 'red' },
+		// 	{ name: 'foo', weight: .5, color: 'green' },
+		// 	{ name: 'bar', weight: 1, color: 'blue' },
+		// 	{ name: 'qix', weight: 1, color: 'yellow' }
+		// ]
 	}
 }
 
@@ -53,7 +83,7 @@ function render(config) {
 
 			//config.context.drawImage(config.source, canvasX, canvasY, cellWidth, cellHeight)
 
-			console.log(x, y, idx, item)
+			// console.log(x, y, idx, item)
 			const resolved = item.resolved !== undefined
 			if(resolved) {
 				const tile = config.tiles[item.resolved]
@@ -64,9 +94,9 @@ function render(config) {
 
 			config.context.fillRect(canvasX, canvasY, cellWidth, cellHeight)
 
-			config.context.fillStyle = 'black'
-			config.context.font = '50px san-serif'
-			config.context.fillText('0,1,2,3,4,5', canvasX + 5, canvasY + cellHeight / 2)
+			// config.context.fillStyle = 'black'
+			// config.context.font = '50px san-serif'
+			// config.context.fillText('0,1,2,3,4,5', canvasX + 5, canvasY + cellHeight / 2)
 
 		}
 	}
@@ -96,9 +126,10 @@ async function onContentLoaded() {
 	// requestAnimationFrame(proxyRender)
 
 	//
-	// setInterval(() => {
-	// 	update(config)
-	// }, 1000 * 5)
+	setInterval(() => {
+		update(config)
+	}, 1000 * 1)
+	update(config)
 }
 
 const syncOnContentLoaded = () => {
