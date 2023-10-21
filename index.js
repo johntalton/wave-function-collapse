@@ -105,6 +105,8 @@ function render(config) {
 function update(config) {
 	config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
 	render(config)
+
+	if(config.grid.resolved === true) { clearInterval(config.updateTimer) }
 }
 
 async function onContentLoaded() {
@@ -126,9 +128,9 @@ async function onContentLoaded() {
 	// requestAnimationFrame(proxyRender)
 
 	//
-	setInterval(() => {
+	config.updateTimer = setInterval(() => {
 		update(config)
-	}, 1000 * 1)
+	}, 1000 * .51)
 	update(config)
 }
 

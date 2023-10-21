@@ -52,6 +52,7 @@ export class WaveFunctionCollapse {
 
 		if(candidate === undefined) {
 			console.log('no more valid candidates in grid')
+			grid.resolved = true
 			return grid
 		}
 
