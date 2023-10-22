@@ -1,6 +1,44 @@
 
-import { WaveFunctionCollapse } from "./wfc.js"
+import { WaveFunctionCollapse, consoleGrid } from "./wfc.js"
 import { UI } from './ui.js'
+
+const WIKIPEDIA_ITEMS =  [
+	{ resolved: 5 }, { resolved: 3 }, { },			{ }, { resolved: 7 }, { },			{ }, { }, { },
+	{ resolved: 6 }, { }, { },			{ resolved: 1 }, { resolved: 9 }, { resolved: 5 },			{ }, { }, { },
+	{ }, { resolved: 9 }, { resolved: 8 },			{ }, { }, { },			{ }, { resolved: 6 }, { },
+
+	{ resolved: 8 }, { }, { },			{ }, { resolved: 6 }, { },			{ }, { }, { resolved: 3 },
+	{ resolved: 4 }, { }, { },			{ resolved: 8 }, { }, { resolved: 3 },			{ }, { }, { resolved: 1 },
+	{ resolved: 7 }, { }, { },			{ }, { resolved: 2 }, { },			{ }, { }, { resolved: 6 },
+
+	{ }, { resolved: 6 }, { },			{ }, { }, { },			{ resolved: 2 }, { resolved: 8 }, { },
+	{ }, { }, { },			{ resolved: 4 }, { resolved: 1 }, { resolved: 9 },			{ }, { }, { resolved: 5 },
+	{ }, { }, { },			{ }, { resolved: 8 }, { },			{ }, { resolved: 7 }, { resolved: 9 },
+]
+	.map(item => ({
+		...item,
+		resolved: item.resolved !== undefined ? item.resolved - 1 : undefined
+	}))
+
+
+const NOT_FUN = [
+		{ }, { resolved: 2 }, { },			{ }, { }, { },			{ }, { }, { },
+		{ }, { }, { },			{ resolved: 6 }, { }, { },			{ }, { }, { resolved: 3 },
+		{ }, { resolved: 7 }, { resolved: 4 },			{ }, { resolved: 8 }, { },			{ }, { }, { },
+
+		{ }, { }, { },			{ }, { }, { resolved: 3 },			{ }, { }, { resolved: 2 },
+		{ }, { resolved: 8 }, { },			{ }, { resolved: 4 }, { },			{ }, { resolved: 1 }, { },
+		{ resolved: 6 }, { }, { },			{ resolved: 5 }, { }, { },			{ }, { }, { },
+
+		{ }, { }, { },			{ }, { resolved: 1 }, { },			{ resolved: 7 }, { resolved: 8 }, { },
+		{ resolved: 5 }, { }, { },			{ }, { }, { resolved: 9 },			{ }, { }, { },
+		{ }, { }, { },			{ }, { }, { },			{ }, { resolved: 4 }, { },
+	]
+	.map(item => ({
+		...item,
+		resolved: item.resolved !== undefined ? item.resolved - 1 : undefined
+	}))
+
 
 function setup() {
 	const source = document.getElementById('source')
@@ -10,7 +48,7 @@ function setup() {
 		colorSpace: 'display-p3'
 	})
 
-	context.imageSmoothingEnabled = false
+	context.imageSmoothingEnabled = true
 
 	return {
 		canvas, context,
@@ -19,19 +57,21 @@ function setup() {
 		grid: {
 			height: 9,
 			width: 9,
-			items: [
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+			items: WIKIPEDIA_ITEMS,
+			// items: NOT_FUN,
+		// 	items: [
+		// 		{ }, { }, { },  { resolved: 0 }, { }, { },  { }, { }, { },
+		// 		{ }, { }, { },  { }, { }, { },  { }, { }, { },
+		// 		{ }, { }, { },  { }, { }, { },  { }, { }, { },
 
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
+		// 		{ }, { }, { },  { }, { }, { },  { }, { }, { },
+		// 		{ }, { }, { },  { }, { }, { },  { }, { }, { },
+		// 		{ }, { }, { },  { }, { }, { },  { }, { }, { },
 
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
-				{ }, { }, { },  { }, { }, { },  { }, { }, { },
-			]
+		// 		{ }, { }, { },  { }, { }, { },  { }, { }, { },
+		// 		{ }, { }, { },  { }, { }, { },  { }, { }, { },
+		// 		{ }, { }, { },  { }, { }, { },  { }, { }, { },
+		// 	]
 		},
 		tiles: [
 			{ name: '1', weight: 1, color: 'red' },
@@ -41,23 +81,22 @@ function setup() {
 			{ name: '5', weight: 1, color: 'orange' },
 			{ name: '6', weight: .1, color: 'cyan' },
 			{ name: '7', weight: .1, color: 'pink' },
-			{ name: '8', weight: .01, color: 'black' },
+			{ name: '8', weight: 1, color: 'black' },
 			{ name: '9', weight: .01, color: 'white' },
 		]
 
 		// grid: {
-		// 	height: 2,
+		// 	height: 3,
 		// 	width: 3,
 		// 	items: [
+		// 		{}, {}, {},
 		// 		{}, {}, {},
 		// 		{}, {}, {}
 		// 	]
 		// },
 		// tiles: [
-		// 	{ name: 'bar', weight: .25, color: 'red' },
-		// 	{ name: 'foo', weight: .5, color: 'green' },
-		// 	{ name: 'bar', weight: 1, color: 'blue' },
-		// 	{ name: 'qix', weight: 1, color: 'yellow' }
+		// 	{ name: 'X', weight: 1, color: 'green' },
+		// 	{ name: 'O', weight: 1, color: 'blue' },
 		// ]
 	}
 }
@@ -94,24 +133,66 @@ function render(config) {
 
 			config.context.fillRect(canvasX, canvasY, cellWidth, cellHeight)
 
-			// config.context.fillStyle = 'black'
-			// config.context.font = '50px san-serif'
-			// config.context.fillText('0,1,2,3,4,5', canvasX + 5, canvasY + cellHeight / 2)
+			if(resolved) {
+				const tile = config.tiles[item.resolved]
+
+				config.context.fillStyle = 'white'
+				config.context.font = '50px san-serif'
+				config.context.fillText(tile.name, canvasX + 5, canvasY + cellHeight / 2)
+			}
 
 		}
 	}
+
+	// if(config.grid.resolved !== true)
+	// 	update(config)
 }
 
 function update(config) {
 	config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
-	render(config)
+	// console.log(consoleGrid(config.grid))
+	// render(config)
 
 	if(config.grid.resolved === true) { clearInterval(config.updateTimer) }
 }
 
 async function onContentLoaded() {
+
+	//
+	window.addEventListener('keydown', event => {
+		const keys = [ 'ArrowRight', 'ArrowLeft' ]
+		if(!keys.includes(event.key)) { return }
+
+		const frequency = event.key === 'ArrowRight' ? 260 :
+			event.key === 'ArrowLeft' ? 300 :
+			0
+
+		//
+		const audioContext = new window.AudioContext()
+
+		const oscillator = new OscillatorNode(audioContext, {
+			type: 'sine',
+			frequency
+		})
+		// oscillator.type = 'square'
+		// oscillator.frequency.setValueAtTime(440, audioContext.currentTime)
+
+		const gain = new GainNode(audioContext)
+		gain.gain.value = 0
+
+		oscillator.connect(gain).connect(audioContext.destination)
+
+		gain.gain.setValueAtTime(.0125, audioContext.currentTime + .125)
+		gain.gain.setValueAtTime(.00125, audioContext.currentTime + .25)
+
+		oscillator.start(audioContext.currentTime)
+		oscillator.stop(audioContext.currentTime + .25)
+	})
+
 	//
 	const config = setup()
+
+	config.grid = WaveFunctionCollapse.normalizeGrid(config.grid, config.tiles)
 
 	//
 	onmessage = event => {
@@ -130,7 +211,9 @@ async function onContentLoaded() {
 	//
 	config.updateTimer = setInterval(() => {
 		update(config)
-	}, 1000 * .51)
+		render(config)
+	}, 1000 * 1)
+
 	update(config)
 }
 

@@ -7,10 +7,15 @@
 // }
 
 
-function gridItemEntropy(item, tiles) {
+function gridItemEntropy(item, tiles, strong = true) {
 	const { superPositions } = {
 		superPositions: [ ...new Array(tiles.length)].map((_, i) => i),
 		...item
+	}
+
+	if(strong) {
+		if(superPositions.length === 1) { return 0 }
+		return 1
 	}
 
 	return superPositions.length / tiles.length
@@ -29,8 +34,70 @@ function selectSuperPosition(item, tiles) {
 	return fullResult.pos
 }
 
+function propagateSudoku(grid, tiles, candidate, resolvedTilePos) {
+
+	const targetX = candidate.idx % grid.width
+	const targetY = Math.floor(candidate.idx / grid.width)
+
+	const column = grid.items.filter((_, idx) => {
+		const x = idx % grid.width
+		return x === targetX
+	})
+
+	// console.log(column)
+
+	const row = grid.items.filter((_, idx) => {
+		const y = Math.floor(idx / grid.width)
+		return y === targetY
+	})
+
+	const sy = 27 * Math.floor(targetY / 3)
+	const sx = 3 * Math.floor(targetX / 3)
+	const s = sy + sx
+	const cubIdxs = [
+		s, s + 1, s + 2,
+		s + 9, s + 9 + 1, s + 9 + 2,
+		s + 18, s + 18 + 1, s + 18 + 2,
+	]
+
+	// console.log('cube', targetX, targetY, cubIdxs)
+	const cube = grid.items.filter((_, idx) => {
+		return cubIdxs.includes(idx)
+	})
+
+	// console.log({ column, row, cube })
+	const all = [ ...column, ...row, ...cube ]
+	all.forEach(item => {
+		item.superPositions = item.superPositions || [ ...new Array(tiles.length)].map((_, i) => i)
+		item.superPositions = item.superPositions.filter(pos => pos != resolvedTilePos)
+	})
+
+	return grid
+}
+
+
+
 
 export class WaveFunctionCollapse {
+	static normalizeGrid(grid, tiles) {
+
+		const resolvedItems = grid.items
+			.map((item, idx) => ({ ...item, idx }))
+			.filter(item => (item.resolved !== undefined))
+
+		for(const ri of resolvedItems) {
+			// console.log(ri)
+			propagateSudoku(grid, tiles, ri, ri.resolved)
+		}
+
+		return grid
+
+		// return {
+		// 	...grid,
+		// 	items: grid.items.map(item => ({ ...item, resolved: undefined }))
+		// }
+	}
+
 	static collapse(grid, tiles) {
 		// console.log('collapse', grid, tiles)
 
@@ -43,7 +110,7 @@ export class WaveFunctionCollapse {
 				const e = gridItemEntropy(item, tiles)
 
 				const targetX = idx % grid.width
-			const targetY = Math.floor(idx / grid.width)
+				const targetY = Math.floor(idx / grid.width)
 
 				return { item, idx, e, targetX, targetY }
 			})
@@ -57,11 +124,16 @@ export class WaveFunctionCollapse {
 		}
 
 		// console.log('selected candidate', candidate, rest)
+		if(candidate.item.superPositions !== undefined && candidate.item.superPositions.length <= 0) {
+			console.log('grid candidate exhausted superPositions', candidate)
+			grid.resolved = true
+			return grid
+		}
 
 		//
 		// resolve grid item
 		const resolvedTilePos = selectSuperPosition(candidate.item, tiles)
-		const resolvedTile = tiles[resolvedTilePos]
+		// const resolvedTile = tiles[resolvedTilePos]
 
 		candidate.item.resolved = resolvedTilePos
 		candidate.item.superPositions = []
@@ -71,45 +143,7 @@ export class WaveFunctionCollapse {
 		//
 		// propagate constraints to neighbors
 		// custom ...
-		{
-			const targetX = candidate.idx % grid.width
-			const targetY = Math.floor(candidate.idx / grid.width)
-
-			const column = grid.items.filter((item, idx) => {
-				const x = idx % grid.width
-				return x === targetX
-			})
-
-			const row = grid.items.filter((item, idx) => {
-				const y = Math.floor(idx / grid.width)
-				return y === targetY
-			})
-
-			const sy =  27 * Math.floor(targetY / 3)
-			const sx = 3 * Math.floor(targetX / 3)
-			const s = sy + sx
-			const cubIdxs = [
-				s, s + 1, s + 2,
-				s + 9, s + 9 + 1, s + 9 + 2,
-				s + 18, s + 18 + 1, s + 18 + 2,
-			]
-
-			// console.log('cube', targetX, targetY, cubIdxs)
-			const cube = grid.items.filter((item, idx) => {
-				return cubIdxs.includes(idx)
-			})
-
-			// console.log({ column, row, cube })
-			const all = [ ...column, ...row, ...cube ]
-			all.forEach(item => {
-				item.superPositions = item.superPositions || [ ...new Array(tiles.length)].map((_, i) => i)
-				item.superPositions = item.superPositions.filter(pos => pos != resolvedTilePos)
-			})
-
-
-		}
-
-
+		propagateSudoku(grid, tiles, candidate, resolvedTilePos)
 
 		const items = grid.items
 
@@ -184,24 +218,24 @@ export class WaveFunctionCollapse {
 // config.grid = WaveFunctionCollapse.collapse(config.grid, config.tiles)
 
 
+export function consoleGrid(grid) {
+	const BRK_STR = '\n------+-------+------\n'
+	return (grid.items.reduce((acc, item, idx) => {
 
-// const BRK_STR = '\n------+-------+------\n'
-// console.log(config.grid.items.reduce((acc, item, idx) => {
+		// const value = item.resolved || '_'
+		const value = (item.resolved !== undefined) ? item.resolved : ('[' + (item.superPositions || '_') + ']')
 
-// 	// const value = item.resolved || '_'
-// 	const value = (item.resolved !== undefined) ? item.resolved : ('[' + (item.superPositions || '_') + ']')
+		const modBar = (idx + 1) % 3 === 0
+		const modRet = (idx + 1) % 9 === 0
+		const modBrk = (idx + 1) % 27 === 0
+		const modEnd = (idx + 1) % 81 === 0
 
-// 	const modBar = (idx + 1) % 3 === 0
-// 	const modRet = (idx + 1) % 9 === 0
-// 	const modBrk = (idx + 1) % 27 === 0
-// 	const modEnd = (idx + 1) % 81 === 0
+		const suffix = modEnd ? '\n.' :
+			modBrk ? BRK_STR :
+			modRet ? '\n' :
+			modBar ? ' | ':
+			' '
 
-// 	const suffix = modEnd ? '\n.' :
-// 		modBrk ? BRK_STR :
-// 		modRet ? '\n' :
-// 		modBar ? ' | ':
-// 		' '
-
-// 	return acc + value + suffix
-// }, '\n'))
-
+		return acc + value + suffix
+	}, '\n'))
+}
